@@ -548,6 +548,37 @@ img { max-width: 100%; }
 
 /* ─── الأعمال ─────────────────────────────────────────────────────────── */
 
+.projects-filter {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-70);
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.filter-btn:hover {
+  border-color: var(--mint);
+  color: var(--green-ink);
+}
+
+.filter-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

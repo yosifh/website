@@ -107,9 +107,12 @@ function SectionHead({
   );
 }
 
+type Filter = "all" | "apps" | "websites";
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [projectFilter, setProjectFilter] = useState<Filter>("all");
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
@@ -126,6 +129,13 @@ export default function Home() {
     initial: reduced ? false : { opacity: 0, y: 24 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.8, delay, ease: EASE },
+  });
+
+  const filteredProjects = projects.filter((project) => {
+    if (projectFilter === "all") return true;
+    if (projectFilter === "apps") return project.category.includes("تطبيق");
+    if (projectFilter === "websites") return project.category.includes("موقع") || project.category.includes("منصة") || project.category.includes("SaaS");
+    return true;
   });
 
   return (
@@ -256,8 +266,31 @@ export default function Home() {
             note="كل عمل هنا وصل إلى مستخدميه: على متجر التطبيقات، أو على نطاق العميل، أو على سيرفر يعمل الآن. والحالة مكتوبة بصراحة على كل بطاقة."
           />
 
+          <Reveal delay={0.05}>
+            <div className="projects-filter">
+              <button
+                className={`filter-btn ${projectFilter === "all" ? "active" : ""}`}
+                onClick={() => setProjectFilter("all")}
+              >
+                الكل
+              </button>
+              <button
+                className={`filter-btn ${projectFilter === "apps" ? "active" : ""}`}
+                onClick={() => setProjectFilter("apps")}
+              >
+                تطبيقات
+              </button>
+              <button
+                className={`filter-btn ${projectFilter === "websites" ? "active" : ""}`}
+                onClick={() => setProjectFilter("websites")}
+              >
+                مواقع ومنصات
+              </button>
+            </div>
+          </Reveal>
+
           <div className="projects-grid">
-            {projects.map((project, index) => (
+            {filteredProjects.map((project, index) => (
               <Reveal key={project.slug} delay={(index % 2) * 0.08}>
                 <article className="project-card">
                   <div className={`project-cover cover-${project.fit}`}>
